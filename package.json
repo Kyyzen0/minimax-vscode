@@ -1,0 +1,74 @@
+{
+  "name": "minimax-vscode",
+  "displayName": "MiniMax",
+  "description": "VS Code chat and selection tools powered by your MiniMax Code subscription through the official MiniMax Code ACP client.",
+  "version": "0.3.0",
+  "publisher": "local",
+  "license": "MIT",
+  "engines": { "vscode": "^1.85.0" },
+  "categories": ["AI", "Chat", "Programming Languages"],
+  "keywords": ["minimax", "ai", "chat", "agent-client-protocol", "mcode"],
+  "main": "./out/extension.js",
+  "activationEvents": [
+    "onView:minimax.chatView",
+    "onCommand:minimax.login",
+    "onCommand:minimax.logout",
+    "onCommand:minimax.openChat",
+    "onCommand:minimax.toggleAgentMode",
+    "onCommand:minimax.explain",
+    "onCommand:minimax.refactor",
+    "onCommand:minimax.generateTests",
+    "onCommand:minimax.docs"
+  ],
+  "contributes": {
+    "viewsContainers": {
+      "activitybar": [{ "id": "minimax-chat-container", "title": "MiniMax", "icon": "$(comment-discussion)" }]
+    },
+    "views": {
+      "minimax-chat-container": [{ "type": "webview", "id": "minimax.chatView", "name": "Chat" }]
+    },
+    "commands": [
+      { "command": "minimax.login", "title": "MiniMax: Sign in", "category": "MiniMax" },
+      { "command": "minimax.logout", "title": "MiniMax: Sign out", "category": "MiniMax" },
+      { "command": "minimax.openChat", "title": "MiniMax: Open Chat", "category": "MiniMax", "icon": "$(comment-discussion)" },
+      { "command": "minimax.toggleAgentMode", "title": "MiniMax: Toggle Agent Mode", "category": "MiniMax", "icon": "$(shield)" },
+      { "command": "minimax.explain", "title": "MiniMax: Explain selection", "category": "MiniMax", "enablement": "editorHasSelection" },
+      { "command": "minimax.refactor", "title": "MiniMax: Refactor selection", "category": "MiniMax", "enablement": "editorHasSelection" },
+      { "command": "minimax.generateTests", "title": "MiniMax: Generate tests for selection", "category": "MiniMax", "enablement": "editorHasSelection" },
+      { "command": "minimax.docs", "title": "MiniMax: Document selection", "category": "MiniMax", "enablement": "editorHasSelection" },
+      { "command": "minimax.chatView.focus", "title": "Focus Chat", "category": "MiniMax" }
+    ],
+    "menus": {
+      "editor/context": [
+        { "command": "minimax.explain", "group": "minimax", "when": "editorHasSelection" },
+        { "command": "minimax.refactor", "group": "minimax", "when": "editorHasSelection" },
+        { "command": "minimax.generateTests", "group": "minimax", "when": "editorHasSelection" },
+        { "command": "minimax.docs", "group": "minimax", "when": "editorHasSelection" }
+      ]
+    },
+    "configuration": {
+      "title": "MiniMax",
+      "properties": {
+        "minimax.mcode.region": {
+          "type": "string",
+          "enum": ["global", "cn"],
+          "default": "global",
+          "scope": "application",
+          "description": "MiniMax account region used by the official sign-in command."
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "lint": "eslint src --ext .ts",
+    "package": "vsce package"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.0",
+    "@types/vscode": "^1.85.0",
+    "typescript": "^5.4.0"
+  }
+}
